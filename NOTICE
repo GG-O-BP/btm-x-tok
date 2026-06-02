@@ -1,0 +1,84 @@
+btm-x-tok
+Copyright (c) 2026 GG-O-BP
+
+This repository is distributed under the MIT License (see the LICENSE file).
+
+It links to two upstream projects — `bottom` and `tokscale` — as git submodules;
+their source is not stored in this repository but is fetched from the upstreams
+on clone. Each is licensed under its own MIT License. The required copyright and
+permission notices are reproduced below so they travel with this repository and
+with any checkout that includes the submodules.
+
+================================================================================
+1. bottom (btm) — a cross-platform graphical process/system monitor
+   Submodule:    bottom/  (git submodule → https://github.com/ClementTsang/bottom)
+   License:      MIT
+--------------------------------------------------------------------------------
+MIT License
+
+Copyright (c) 2019 Clement Tsang
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+Additional attribution within bottom: bottom adapts code from several permissive
+upstreams, credited inline in its source (ratatui / tui-rs — MIT; heim — MIT OR
+Apache-2.0; psutil — BSD-3-Clause; sysinfo — MIT; nohash — MIT OR Apache-2.0;
+spotify-tui — MIT). The Windows installer template bottom/wix/main.wxs is
+Apache-2.0 (Copyright (C) 2017 Christopher R. Field).
+
+================================================================================
+2. tokscale — AI token-usage analytics CLI/TUI
+   Submodule:    tokscale/  (git submodule → https://github.com/junhoyeo/tokscale)
+   License:      MIT
+--------------------------------------------------------------------------------
+MIT License
+
+Copyright (c) 2025 Junho Yeo
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+Note: tokscale's repository also ships third-party brand logos and a GitHub
+Octocat derivative (under tokscale/.github/assets and tokscale/packages/frontend)
+that are trademarks of their respective owners and are NOT covered by the MIT
+license.
+
+================================================================================
+Note on builds
+================================================================================
+This repository contains no compiled artifact and no combined/derivative
+integration code. Any unified monitor generated from the harness specification is
+produced outside this repository and is not distributed here; whoever builds and
+distributes such a binary is responsible for carrying the notices of its own
+dependency tree (e.g. generated mechanically with `cargo about` / `cargo deny`).

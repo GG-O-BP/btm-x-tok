@@ -1,0 +1,6 @@
+[submodule "bottom"]
+	path = bottom
+	url = https://github.com/ClementTsang/bottom.git
+[submodule "tokscale"]
+	path = tokscale
+	url = https://github.com/junhoyeo/tokscale.git

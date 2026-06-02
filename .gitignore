@@ -1,0 +1,18 @@
+/target
+**/target/
+/.claude/
+.DS_Store
+
+# --- btm-x-tok: local integration workspace, never published ---
+# bottom/ and tokscale/ are git submodules (pristine upstream). The unified
+# monitor is generated on demand by an LLM from the harness spec; none of the
+# generated/integration code or the in-progress spec is tracked here.
+/monitor/
+/vendor/
+/scripts/
+/Cargo.toml
+/Cargo.lock
+/MERGE_PLAN.md
+
+# preserved snapshot of the previous in-tree (shimmed) bottom/tokscale + scratch
+/.attic/
