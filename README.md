@@ -18,33 +18,44 @@ But the interesting part isn't the tool — it's **how this repository ships it.
 
 ## Spec-as-source
 
-`btm-x-tok` is a practical experiment in **spec-as-source**: a development
-methodology where the **specification is the source of truth and the code is a
-derived, regenerable artifact** — not the other way around.
+`btm-x-tok` is a practical experiment in **spec-as-source** — a term from the
+emerging (2025–) [spec-driven-development][sdd] discourse for its most aggressive
+rung: the **specification is the single source of truth, and the implementation
+code is a derived, regenerable artifact** an AI agent produces — you edit the spec,
+never the code. Martin Fowler frames the ladder as *spec-first → spec-anchored →
+spec-as-source*; GitHub's [Spec Kit][speckit] puts it as moving from "code is the
+source of truth" to "intent is the source of truth." (The term is new and has no
+settled single origin.)
 
-This repo takes the idea to its limit: **it contains no integration code at all.**
-What is version-controlled is a precise specification ([`AGENTS.md`](AGENTS.md))
-plus links to the two upstream tools. A coding agent reads the spec, **generates**
-the integration locally, you run it, and it is **discarded** — the generated code
-is never committed.
+Here's the honest nuance: most spec-driven tools (Spec Kit, Kiro, Tessl) still
+**commit** the generated code — they just mark it `// GENERATED FROM SPEC — DO NOT
+EDIT`. **This repo takes spec-as-source to its limit: it commits no integration
+code at all.** What is version-controlled is the spec ([`AGENTS.md`](AGENTS.md))
+plus links to the two upstreams; an agent reads the spec, **generates** the
+integration locally, you run it, and it is **discarded**. That "never committed"
+stance is *this repo's* stricter choice, not the SDD norm — and it is enforced
+structurally by an allowlist [`.gitignore`](.gitignore) and a
+[CI guard](.github/workflows/spec-guard.yml).
 
-|                       | Conventional             | Spec-driven dev          | **Spec-as-source (this repo)**          |
-| --------------------- | ------------------------ | ------------------------ | --------------------------------------- |
-| Source of truth       | the code                 | spec **and** code        | **the spec only**                       |
-| Code in the repo      | yes                      | yes (generated + kept)   | **never** (ephemeral, gitignored)       |
-| To change behavior    | edit code                | edit spec, regen, commit | **edit spec, regenerate**               |
-| Tracks upstream drift | manual                  | manual                   | **re-derived from current upstream**    |
+|                    | Conventional | Spec-driven dev (Spec Kit / Kiro / Tessl) | This repo — spec-as-source, to the limit    |
+| ------------------ | ------------ | ----------------------------------------- | ------------------------------------------- |
+| Source of truth    | the code     | the spec                                  | **the spec only**                           |
+| Generated code     | —            | **committed**, marked read-only           | **never committed** (ephemeral, gitignored) |
+| To change behavior | edit code    | edit spec → regenerate → commit           | **edit spec → regenerate**                  |
 
-> The way a `Dockerfile` or a `Makefile` made the *recipe* the deliverable, here
-> the recipe is a specification and the "compiler" is an LLM coding agent.
+> Like a `Dockerfile` or `Makefile` made the *recipe* the deliverable — except the
+> "compiler" is an LLM, so it is **non-deterministic**: re-derivation reproduces the
+> *behavior*, not the exact bytes.
 
-Why it's worth trying:
+What this buys — and what it costs:
 
-- **Stays current for free.** The integration is re-derived against whatever the
-  upstreams are *now*, instead of rotting against a vendored snapshot.
-- **Nothing to maintain downstream.** No glue to keep patched as the upstreams move.
-- **The intent is the artifact.** The durable, interesting part — *how* the two
-  tools fit together — is what gets written down; the mechanical part is regenerated.
+- **Stays current, as long as the spec is maintained.** The integration is
+  re-derived against whatever the upstreams are *now*, instead of rotting against a
+  vendored snapshot. The catch: that only holds if [`AGENTS.md`](AGENTS.md) is kept
+  in sync as the upstreams move, and a capable model is used.
+- **Nothing to vendor or patch downstream.** No glue to keep in a fork.
+- **The intent is the artifact.** The durable part — *how* the two tools fit
+  together — is written down; the mechanical part is regenerated.
 - **No license/maintenance burden of a fork.** The repo redistributes no upstream
   code; it only links to it.
 
@@ -152,3 +163,5 @@ in [NOTICE](NOTICE).
 
 [bottom]: https://github.com/ClementTsang/bottom
 [tokscale]: https://github.com/junhoyeo/tokscale
+[sdd]: https://martinfowler.com/articles/exploring-gen-ai/sdd-3-tools.html
+[speckit]: https://github.blog/ai-and-ml/generative-ai/spec-driven-development-with-ai-get-started-with-a-new-open-source-toolkit/
