@@ -1,0 +1,7 @@
+---
+description: Authoritative agent rules for btm-x-tok
+alwaysApply: true
+---
+
+The authoritative instructions for this repository are in `/AGENTS.md`. Read and follow
+`AGENTS.md`. This rule only points there; it does not restate the content.

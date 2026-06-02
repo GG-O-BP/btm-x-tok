@@ -1,18 +1,36 @@
-/target
-**/target/
-/.claude/
-.DS_Store
+# btm-x-tok — ALLOWLIST .gitignore
+# Published repo = ONLY spec/docs + the two submodules + agent wiring.
+# Ignore everything, then re-include exactly the publishable set. Any local
+# integration code (monitor/, vendor/, scripts/, Cargo.*, MERGE_PLAN.md, .attic/)
+# or future file is ignored by default and cannot be accidentally committed.
+#
+# Pattern rules: "/*" matches ONLY immediate children of the root ("*" never
+# crosses "/"). Git won't descend into an ignored directory, so a directory must
+# be re-included ("!/harness/") BEFORE its contents ("!/harness/**").
 
-# --- btm-x-tok: local integration workspace, never published ---
-# bottom/ and tokscale/ are git submodules (pristine upstream). The unified
-# monitor is generated on demand by an LLM from the harness spec; none of the
-# generated/integration code or the in-progress spec is tracked here.
-/monitor/
-/vendor/
-/scripts/
-/Cargo.toml
-/Cargo.lock
-/MERGE_PLAN.md
+# 1) default-deny floor (top-level only)
+/*
 
-# preserved snapshot of the previous in-tree (shimmed) bottom/tokscale + scratch
-/.attic/
+# 2) publishable top-level files
+!/.gitignore
+!/.gitmodules
+!/LICENSE
+!/NOTICE
+!/README.md
+!/AGENTS.md
+!/CLAUDE.md
+!/GEMINI.md
+
+# 3) upstream submodules (gitlinks)
+!/bottom
+!/tokscale
+
+# 4) the spec directory (dir first so git descends, then all contents)
+!/harness/
+!/harness/**
+
+# 5) cross-agent wiring pointers (point at AGENTS.md; never duplicate it)
+!/.cursor/
+!/.cursor/**
+!/.github/
+!/.github/copilot-instructions.md
