@@ -1,0 +1,4 @@
+# Aider config — make Aider load the canonical agent spec on every session.
+# Authoritative instructions live in AGENTS.md (single source of truth for all
+# agents); this only points Aider at it. Do not duplicate AGENTS.md content here.
+read: [AGENTS.md]

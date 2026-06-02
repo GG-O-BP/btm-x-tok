@@ -29,8 +29,9 @@
 !/harness/
 !/harness/**
 
-# 5) cross-agent wiring pointers (point at AGENTS.md; never duplicate it)
+# 5) cross-agent wiring (point at AGENTS.md; never duplicate it) + CI guard
 !/.cursor/
 !/.cursor/**
+!/.aider.conf.yml
 !/.github/
-!/.github/copilot-instructions.md
+!/.github/**

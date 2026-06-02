@@ -1,0 +1,56 @@
+name: spec-guard
+
+# Mechanically enforce the two core invariants of this spec-only repo:
+#   1. NO integration code is ever tracked (the published repo is spec/docs only).
+#   2. Every agent-wiring file points at AGENTS.md (single source of truth, zero drift).
+# Submodules are intentionally NOT checked out — we inspect the superproject only.
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  guard:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: No integration code may be tracked (spec-only invariant)
+        run: |
+          leaks=$(git ls-files | grep -E '(\.rs$|(^|/)Cargo\.(toml|lock)$|^monitor/|^vendor/|^scripts/|^\.attic/|(^|/)MERGE_PLAN\.md$)' || true)
+          if [ -n "$leaks" ]; then
+            echo "::error::integration code is tracked — this repo must stay spec-only:"
+            echo "$leaks"
+            exit 1
+          fi
+          echo "OK: no integration code is tracked."
+
+      - name: AGENTS.md is the canonical entry
+        run: |
+          test -f AGENTS.md || { echo "::error::AGENTS.md missing at repo root"; exit 1; }
+          echo "OK: AGENTS.md present."
+
+      - name: Agent-wiring files reference AGENTS.md (no drift)
+        run: |
+          fail=0
+          grep -q "@AGENTS.md" CLAUDE.md || { echo "::error::CLAUDE.md must @import AGENTS.md"; fail=1; }
+          for f in GEMINI.md .github/copilot-instructions.md .cursor/rules/agents.mdc .aider.conf.yml; do
+            if [ -f "$f" ]; then
+              grep -q "AGENTS.md" "$f" || { echo "::error::$f must reference AGENTS.md"; fail=1; }
+            fi
+          done
+          [ "$fail" -eq 0 ] && echo "OK: all agent-wiring files reference AGENTS.md."
+          exit $fail
+
+      - name: No legacy single-agent rule files
+        run: |
+          fail=0
+          for f in .cursorrules .windsurfrules .clinerules; do
+            if [ -f "$f" ]; then echo "::error::legacy $f found — use AGENTS.md instead"; fail=1; fi
+          done
+          [ "$fail" -eq 0 ] && echo "OK: no legacy rule files."
+          exit $fail
