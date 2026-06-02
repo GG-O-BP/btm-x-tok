@@ -1,0 +1,15 @@
+description = "Regenerate the btm × tok unified monitor from AGENTS.md (ephemeral; never commit)"
+prompt = """Read AGENTS.md (the single source of truth) and regenerate the Design-A in-process compositor exactly as specified.
+
+Generate ONLY into the gitignored local workspace: monitor/, vendor/, root Cargo.toml, and shim files inside the bottom/ and tokscale/ submodules. These are gitignored — never commit them, never commit to the submodules.
+
+Build order (full contract in AGENTS.md):
+1. Root workspace + vendored unicode-ellipsis patch.
+2. bottom shim, then `cargo build -p bottom`.
+3. tokscale shims, then `cargo build -p tokscale-cli`.
+4. monitor crate (10 files), then `cargo build -p monitor`.
+5. Run acceptance gates G1-G7.
+
+Extra args: {{args}}
+
+Consult .attic/{monitor,bottom,tokscale} for shape; re-derive copied loop bodies from current upstream. Match every signature and version in AGENTS.md exactly — do not upgrade, port, or refactor. Honor invariants I1-I9."""

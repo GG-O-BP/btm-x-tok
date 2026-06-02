@@ -7,9 +7,12 @@
 
 ## Claude Code specifics
 
-- Default to **plan mode** for any task that would change *tracked* files. The publishable
-  surface is tiny and allowlist-controlled (`.gitignore`). Generating the unified monitor does
-  **not** change tracked files — it writes only to gitignored local paths.
-- The integration is **ephemeral**: generate it in the local, gitignored workspace, run it, and
-  **never `git add` / commit it**. Only the spec/docs, the two submodules, and the agent-wiring
-  files are publishable.
+- **Regenerate** the unified monitor with the `/regen` command or the
+  **regenerate-monitor** skill (or delegate to the `monitor-generator` subagent).
+  Each reads `AGENTS.md`, generates into the gitignored workspace, runs the
+  acceptance gates, and never commits.
+- Default to **plan mode** for any task that would change *tracked* files.
+  Generating the monitor does NOT change tracked files — it writes only gitignored
+  local paths.
+- The integration is **ephemeral**: generate locally, run, and **never `git add` /
+  commit it**. Only spec/docs + the two submodules + agent config are publishable.

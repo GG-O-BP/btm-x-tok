@@ -1,17 +1,17 @@
 # btm-x-tok — ALLOWLIST .gitignore
-# Published repo = ONLY spec/docs + the two submodules + agent wiring.
-# Ignore everything, then re-include exactly the publishable set. Any local
-# integration code (monitor/, vendor/, scripts/, Cargo.*, MERGE_PLAN.md, .attic/)
-# or future file is ignored by default and cannot be accidentally committed.
+# Published = spec/docs + the two submodules + each agent's NATIVE config only.
+# Ignore everything, then re-include the publishable set. Integration code
+# (monitor/, vendor/, scripts/, Cargo.*, MERGE_PLAN.md, .attic/) and any future
+# file stays ignored and cannot be accidentally committed.
 #
-# Pattern rules: "/*" matches ONLY immediate children of the root ("*" never
-# crosses "/"). Git won't descend into an ignored directory, so a directory must
-# be re-included ("!/harness/") BEFORE its contents ("!/harness/**").
+# Pattern rules: "/*" matches only top-level entries ("*" never crosses "/").
+# Git won't descend into an ignored dir, so a dir is re-included ("!/.claude/")
+# before its contents ("!/.claude/**"). Local-only agent files are re-ignored last.
 
-# 1) default-deny floor (top-level only)
+# default-deny floor (top-level only)
 /*
 
-# 2) publishable top-level files
+# publishable top-level files
 !/.gitignore
 !/.gitmodules
 !/LICENSE
@@ -20,18 +20,22 @@
 !/AGENTS.md
 !/CLAUDE.md
 !/GEMINI.md
+!/.aider.conf.yml
 
-# 3) upstream submodules (gitlinks)
+# upstream submodules (gitlinks)
 !/bottom
 !/tokscale
 
-# 4) the spec directory (dir first so git descends, then all contents)
-!/harness/
-!/harness/**
-
-# 5) cross-agent wiring (point at AGENTS.md; never duplicate it) + CI guard
+# each agent's NATIVE config dir (dir first so git descends, then contents)
+!/.claude/
+!/.claude/**
 !/.cursor/
 !/.cursor/**
-!/.aider.conf.yml
+!/.gemini/
+!/.gemini/**
 !/.github/
 !/.github/**
+
+# ...but keep LOCAL-only agent files out (re-ignored within the allowed dirs)
+/.claude/settings.local.json
+/.claude/**/*.local.json
